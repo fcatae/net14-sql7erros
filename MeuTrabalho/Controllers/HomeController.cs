@@ -23,8 +23,14 @@ namespace MeuTrabalho.Controllers
             return RedirectToActionPermanent("Index", "Account");
         }
 
-        public IActionResult Dashboard()
+        public IActionResult Dashboard(string name)
         {
+            if( name == null )
+            {
+                throw new ArgumentNullException(name);
+            }
+
+            ViewBag.Name = name;
             return View();
         }
 

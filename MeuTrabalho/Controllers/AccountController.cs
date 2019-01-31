@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MeuTrabalho.Models;
+using System.Data.SqlClient;
 
 namespace MeuTrabalho.Controllers
 {
@@ -20,18 +21,22 @@ namespace MeuTrabalho.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Index(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                // var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                SqlConnection connection = new SqlConnection("Server=saturnoserver.database.windows.net;Database=MEUDB;User=aclogin;Password=homework-jan31;Max Pool Size=10");
+                SqlCommand cmd = new SqlCommand($"SELECT username FROM tbLogin WHERE email='{model.Email}' AND pwd='{model.Password}'", connection);
+
+                connection.Open();
+                string username = (string)cmd.ExecuteScalar();
+
+                connection.Close();
+
+                return RedirectToAction("Dashboard", "Home", new { name = username});
             }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        public IActionResult Error()
-        {
-            return View();
+            catch(Exception ex)
+            {
+                return View(model);
+            }
         }
     }
 }
