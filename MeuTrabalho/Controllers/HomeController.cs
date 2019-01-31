@@ -11,16 +11,15 @@ namespace MeuTrabalho.Controllers
     public class HomeController : Controller
     {
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(LoginViewModel model, string returnUrl = null)
+        public IActionResult Index(LoginViewModel model)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
                 // var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
@@ -30,7 +29,7 @@ namespace MeuTrabalho.Controllers
             return View(model);
         }
 
-        public IActionResult Index()
+        public IActionResult Dashboard()
         {
             return View();
         }
